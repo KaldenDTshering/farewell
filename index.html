@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Info & Payment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 20px;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #f1f5f9;
+        }
+
+        .quick-links {
+            display: grid;
+            gap: 15px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .link-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        .link-btn .icon {
+            font-size: 28px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .location-link .icon { background: rgba(239, 68, 68, 0.2); }
+        .whatsapp-link .icon { background: rgba(34, 197, 94, 0.2); }
+        .form-link .icon { background: rgba(251, 146, 60, 0.2); }
+
+        .instructions-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .instructions-list li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 20px;
+            line-height: 1.7;
+            color: #cbd5e1;
+        }
+
+        .instructions-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        .amount-display {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px dashed #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 20px;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .alert {
+            background: rgba(251, 191, 36, 0.15);
+            border-left: 4px solid #fbbf24;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #fde68a;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .alert strong {
+            color: #fbbf24;
+        }
+
+        .reminder {
+            background: rgba(14, 165, 233, 0.15);
+            border-left: 4px solid #0ea5e9;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #bae6fd;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .reminder strong {
+            color: #38bdf8;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .contact-icon {
+            font-size: 24px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 10px;
+        }
+
+        .contact-text {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .contact-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #a78bfa;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>✨ Farewell Dinner</h1>
+            <p>Mr. Chamling May Be Leaving, But His Legacy Lives On</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>🔗</span>
+                Quick Access
+            </div>
+            <div class="quick-links">
+                <a href="https://www.google.com/maps/place/Urban+Cottage/@27.463079,89.6352816,17z/data=!3m1!4b1!4m6!3m5!1s0x39e195708e1ea297:0x3ee42a10424224b7!8m2!3d27.463079!4d89.6352816!16s%2Fg%2F11lv_ny4tm?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" class="link-btn location-link" target="_blank" rel="noopener noreferrer">
+                    <span class="icon">📍</span>
+                    <span>View Location</span>
+                </a>
+
+                <a href="https://chat.whatsapp.com/GP7Un5teQVyKl6G7ZhYeO6" class="link-btn whatsapp-link" target="_blank" rel="noopener noreferrer">
+                    <span class="icon">💬</span>
+                    <span>Join WhatsApp Group</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>💰</span>
+                Payment Instructions
+            </div>
+            <ol class="instructions-list">
+                <li>Check the <strong>WhatsApp group chat</strong> for account number details</li>
+                <li>Transfer the amount shown below:
+                    <div class="amount-display">Amount: ___________</div>
+                </li>
+                <li>Send money to the <strong>account number in the group</strong></li>
+                <li>Take a <strong>screenshot</strong> of your payment confirmation</li>
+                <li>Post the screenshot in the <strong>WhatsApp group</strong> to confirm</li>
+            </ol>
+
+            <div class="alert">
+                <strong>⚠️ Important:</strong> Sending the screenshot helps us track all contributions accurately.
+            </div>
+        </div>
+
+        <div class="reminder">
+            <strong>📋 Don't Forget!</strong> Please fill out the Dinner Preferences Form below. Your responses help us plan accordingly.
+        </div>
+
+        <div class="card">
+            <div class="quick-links">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfPzTN4t3HjuZg2TLGNMiZXiAmdyCqCBchdxNlA0sPmhxaZZA/viewform?usp=dialog " class="link-btn form-link" target="_blank" rel="noopener noreferrer">
+                    <span class="icon">🍽️</span>
+                    <span>Fill Dinner Preferences Form</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>📞</span>
+                Contact Information
+            </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <div class="contact-text">
+                        <div class="contact-label">For further information</div>
+                        <div class="contact-value">17804161</div>
+                    </div>
+                </div>
+
+                <div class="alert">
+                    <strong>Note:</strong> Service charges applied separately
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Made with ❤️ | Stay connected, stay organized
+        </div>
+    </div>
+</body>
+</html>
